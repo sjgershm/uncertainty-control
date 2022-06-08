@@ -22,6 +22,7 @@ function plot_results(data,fig)
             subplot(1,3,3);
             plot_results(data,'confidence')
             mytitle('C','Left','FontSize',25,'FontWeight','Bold');
+            set(gcf,'Position',[200 200 1000 500]);
             
         case 'variance'
             
@@ -131,8 +132,6 @@ function plot_results(data,fig)
         case 'fig3'
             
             load model_fits
-            D = data2struct(data);
-            q = linspace(30,60,12);
             
             for i = 1:length(results)
                 lme(:,i) = -0.5*results(i).bic;
@@ -156,6 +155,7 @@ function plot_results(data,fig)
             mytitle('B','Left','FontSize',25,'FontWeight','Bold');
             [~,p,~,stat] = ttest(x(:,1),x(:,2));
             disp(['alpha, low vs. high incentive: t(',num2str(stat.df),') = ',num2str(stat.tstat),', p = ',num2str(p)]);
+            set(gcf,'Position',[200 200 800 500]);
             
     end
     

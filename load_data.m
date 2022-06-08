@@ -24,10 +24,6 @@ function data = load_data
         end
     end
     
-    % central tendency
-    data.ct = (data.estimate - data.stimulus) .* (data.avg_stim - data.stimulus);
-    %data.log_ct = (data.log_estimate - data.log_stimulus) .* (data.log_avg_stim - data.log_stimulus);
-    
     % remove subjects who: (1) make too many invalid responses; (2) are too old
     badsub = 0;
     for s = 1:length(S)

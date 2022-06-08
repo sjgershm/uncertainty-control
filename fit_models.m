@@ -1,4 +1,4 @@
-function [results,bms_results] = fit_models(D,M,results)
+function [results,bms_results] = fit_models(data,M,results)
     
     % Fit models to data using maximum likelihood estimation.
     % Requires the mfit package.
@@ -6,7 +6,7 @@ function [results,bms_results] = fit_models(D,M,results)
     % USAGE: [results,bms_results] = fit_models(D,M,results)
     %
     % INPUTS:
-    %   D - data in struct format (see data2struct.m)
+    %   data - see load_data
     %   M (optional) - vector of models to fit
     %   results (optional) - existing results structure to modify
     %
@@ -14,6 +14,7 @@ function [results,bms_results] = fit_models(D,M,results)
     %   results - structure containing fitted model (see mfit_optimize.m)
     %   bms_results - random-effects model comparison structure (see mfit_bms.m)
     
+    D = data2struct(data);
     models = {'RI' 'FP' 'NB'};
     if nargin < 2; M = 1:length(models); end
     
