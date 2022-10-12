@@ -1,0 +1,344 @@
+<!doctype html>
+<meta charset='UTF-8' />
+<head>
+    <title>Estimation Task</title>
+
+    <!-- General utilities -->
+    <script src = "shared/jquery-3.6.0.min.js"></script>
+    <script src = "shared/jquery-ui.min.js"></script>
+    <link rel = "stylesheet" href="shared/jquery-ui.min.css">
+    <script src = "shared/underscore-min.js"></script>
+    <script src ="shared/bootstrap.bundle.min.js"></script>
+    <link href="shared/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+    <script src = "shared/sprintf.min.js"></script>
+
+    <!-- JSPsych -->
+    <script src="shared/jspsych-6.3.1/jspsych.js"></script>
+    <link rel="stylesheet" href="shared/jspsych-6.3.1/css/jspsych.css">
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-rdk.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+    <script src="shared/jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+
+    <!-- Experiment-specific scripts & styles -->
+    <link href="styles/exp_style.css" rel="stylesheet" type="text/css"></link>
+    <script src="scripts/fullscreen-promise.js"></script>
+    <script src="scripts/plugins/consent.js"></script>
+    <script src="scripts/plugins/quiz-multi-choice.js"></script>
+    <script src="scripts/plugins/modified-jspych-survey-html-form.js"></script>
+    <script src="scripts/plugins/survey.js"></script>
+
+</head>
+<body>
+    <div id = "fullscreen-prompt" class = "absolute-center"> 
+        <h4>Please remain in fullscreen mode throughout the entire 
+            experiment.</h4>
+        <button id = "fullscreen-btn" 
+        class="jspsych-btn horizontal-center">Enter Fullscreen mode</button>
+    </div>
+
+    <div id = "jspsych-display"></div>
+    <div id = "templates">
+        <div id = "consent" class = "slide">
+            <h1>Consent</h1>
+    
+            <p>Please read this consent agreement carefully before deciding 
+                whether to participate in this experiment.</p>
+    
+            <p><strong>Purpose of the research:</strong> To examine the way 
+                people make decisions and learn about the relationships 
+                between stimuli, estimations, and incentives.</p>
+    
+            <p><strong>What you will do in this research:</strong> 
+                In this task you will be presented dot stimuli on 
+                the screen and you will be asked to estimate the number of 
+                dots you saw.</p>
+
+            <p><strong>Time required:</strong> This experiment will 
+                take 30-40 minutes to complete.</p>
+    
+            <p><strong>Risks:</strong> There are no anticipated risks 
+                associated with participating in this study. The effects of 
+                participating should be comparable to those you would 
+                experience from viewing a computer monitor and using a 
+                mouse and keyboard for the duration of the experiment.</p>
+    
+            <p><strong>Benefits:</strong> The study provides important 
+                information about the nature of perceptual judgements and
+                subjective confidence.</p>
+    
+            <p><strong>Compensation:</strong> You will receive $6 for 
+                completing the experiment and an accuracy bonus of up 
+                to $5.</p>
+    
+            <p><strong>Confidentiality:</strong>  Your participation in 
+                this study will remain confidential. No personally 
+                identifiable information will be associated with your data. 
+                Your de-identified data may be shared with other 
+                researchers and used in future projects.</p>
+    
+            <p><strong>Participation and withdrawal:</strong> Your 
+                participation in this study is completely voluntary
+                and you may refuse to participate or you may choose to 
+                withdraw at any time without penalty or loss of 
+                benefits to which you are otherwise entitled.</p>
+    
+            <p><strong>How to contact the researcher:</strong> If you have 
+                questions or concerns about your participation 
+                or payment, or want to request a summary of research 
+                findings, please contact Taylor Burke, 
+                taylorburke@fas.harvard.edu.</p>
+    
+            <p><strong>Whom to contact about your rights in this 
+                research:</strong> For questions, concerns, suggestions, 
+                or complaints that have not been or cannot be addressed 
+                by the researcher, or to report research-related harm,
+                please contact the Committee on the Use of Human Subjects 
+                in Research at Harvard University, 1414 Massachusetts
+                Avenue, Second Floor, Cambridge, MA 02138. 
+                Phone: 617-496-2847. Email: cuhs@fas.harvard.edu.</p> 
+    
+            <div class = "alert alert-primary" role = "alert">
+                <h3>Agreement</h3>
+                <p><strong>
+                    The nature and purpose of this research have been 
+                    sufficiently explained and I agree to participate 
+                    in this study. I understand that I am free to 
+                    withdraw at any time without incurring any penalty.
+                </strong></p>		
+                <p>
+                    Please consent by clicking the button below to 
+                    continue. Otherwise, please exit the study at 
+                    this time.
+                </p>
+                <div align=center>
+                    <p>
+                        <input type="checkbox" id="consent_checkbox" 
+                        style="transform: scale(1.5);"/>
+                        &nbsp;I agree to take part in this study.
+                    </p>
+                    
+                    <button type="button" id="start" 
+                    class = "jspsych-btn" disabled>Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <div id = "task-instructions-1" class = "slide">
+            <h1>How to Play</h1>
+            <h4>In this experiment, you will complete an <b>estimation 
+                task</b>.</h4>
+            <h4>The entire experiment will take 30-40 minutes to complete.</h4>
+            <h4><b>NOTE:</b> Please read the following instructions carefully as 
+                there will be a comprehension check.</h4>
+        </div>
+
+        <div id = "task-instructions-2" class = "slide">
+            <h1>How to Play</h1>
+            <h4>This estimation task includes %i blocks with %i trials per 
+                block.</h4>
+            <h4>A trial includes the following: the possible monetary reward, 
+                a group of dots (example below), an estimation 
+                prompt, a confidence rating prompt, and the money awarded.</h4>
+            <img class = "stim-img" src='%s' />
+            <h4><b><em>Your task is to estimate the number of dots shown to you 
+                and rate how confident you are in that estimation.</em></b></h4>
+            <h4>You will only have <b>10 seconds</b> to report your
+                 estimate.</h4>
+        </div>
+
+        <div id = "task-instructions-3" class = "slide">
+            <h1>How to Play</h1>
+            <h4>One of two monetary values will be flashed before you are shown
+                a group of dots.</h4>
+            <h4><b style = '%s'>$%i</b> indicate <b>high reward</b> trials.</h4>
+            <h4><b style = '%s'>$%i</b> indicate <b>low reward</b> trials.</h4>
+            <h4>If your estimate is <b>within %i</b> of the actual number of 
+                dots, your trial will be awarded the corresponding dollar 
+                amount. Estimates outside of this range will receive 
+                zero dollars.</h4>
+        </div>
+
+        <div id = "task-instructions-4" class = "slide">
+            <h1>Payment</h1>
+            <h4>You will earn $6 base pay with the possibility of earning 
+                an <b>accuracy bonus</b> of up to $%i.</h4>
+            <h4>Your bonus is calculated by <em>randomly selecting</em> a trial 
+                and awarding you the amount you earned on that trial. Meaning, 
+                if you earned $%i on your randomly selected trial, you will earn 
+                a $%i bonus.</h4>
+            <h4>Again, you earn rewards if your estimate is <em>within %i</em> 
+                of the actual number of dots. Therefore, the more accurate you
+                are, the more likely you are to receive the full bonus.</h4>
+        </div>
+
+        <div id = "task-instructions-5" class = "slide">
+            <h1>On to the comprehension check!</h1>
+            <h4>Those are all the task instructions for now. Feel free to flip
+                back and review. 
+            </h4>
+            <h4>Don't worry: if you don't pass, you will have another 
+                opportunity to review the instructions and retake the 
+                comprehension check.
+            </h4>
+            <h4>Click 'Next' when ready to start the comprehension check. </h4>
+        </div>
+
+        <div id = "train-instructions" class = "slide">
+            <h1>On to Practice!</h1>
+            <h4>You will see %i block with %i practice trials.</h4>
+            <h4><b>NOTE:</b> You will receive different feedback on these
+            practice trials than you will during the experiment.</h4>
+            <h4>After a <em>practice</em> trial, we will reveal the actual 
+                number of dots, your estimate, and the money awarded.</h4>
+            <h4>After an <em>experiment</em> trial, we will only reveal the 
+                money awarded.</h4>
+        </div>
+
+        <div id = "test-instructions-1" class = "slide">
+            <h1>On to the Experiment!</h1>
+            <h4>Great job! Now that practicing is done, you are ready to start 
+                the experiment.</h4>
+            <h4>Again, this will take approximately 30-40 minutes to 
+                complete.</h4>
+            <h4>You will complete %i blocks with %i trials per block. Don't
+                worry, you can take a break after each block.</h4>
+        </div>
+
+        <div id = "test-instructions-2" class = "slide">
+            <h1>Exclusion Criteria</h1>
+            <h4>Please note that we do check your data for accuracy.</h4>
+            <h4>If you respond randomly, or have too many misses, we have the 
+                right to exclude you from all future HITs by our group.</h4>
+            <h4>We appreciate you taking the time to complete the task to the 
+                best of your ability.</h4>
+            <h4>When you are ready to start the experiment, click 'Next.'</h4>
+        </div>
+
+        <div id = "block-prompt" class = "slide">
+            <h1>Block %i of %i</h1>
+            <h4 class = "block-ave-info">The <b>average number of dots</b> 
+                on this block is</h4>
+            <h4 class = "block-ave">%i</h4>
+            <h5>Click 'Next' to begin.</h5>
+        </div>
+
+        <div id = "comprehension-feedback" class = "slide">
+            <h4>You answered <strong>%i of 3</strong> questions correctly.</h4>
+            <h4>%s</h4>
+        </div>
+
+        <div id = "train-feedback" class = "slide">
+            <h4 class = "reward">+ $%i</h4>
+            <h4>Actual: %i</h4>
+            <h4>Estimate: %i</h4>
+        </div>
+
+        <div id = "test-feedback" clase = "slide">
+            <p class = "reward">+ $%i</p>
+        </div>
+
+        <div id = "bonus-feedback" class = "slide">
+            <h1>All done! Bonus time...</h1>
+            <h4>We randomly selected trial %i from block %i.</h4>
+            <h4>On that %s reward trial, you estimated %i dots, when 
+                the true number of dots was %i. </h4>
+            <h4>Because your estimate was %s within %i of the true number of 
+                dots, you %s</h4>
+        </div>
+
+        <div id = "survey" class = "slide">
+			<h1>Almost done!</h1>
+            <p>Answering these questions will help us understand your 
+                responses.</p>
+            <form>
+                <div class="form-group">
+                    <label for="survey-gender">Gender</label>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-gender" id="gender-f" value="f">
+                        <label class="form-check-label" for="gender-f">
+                            Female
+                        </label>						  
+                    </div>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-gender" id="gender-m" value="m">
+                        <label class="form-check-label" for="gender-m">
+                            Male
+                        </label>						  
+                    </div>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-gender" id="gender-nb" value="nb">
+                        <label class="form-check-label" for="gender-nb">
+                            Non-binary
+                        </label>						  
+                    </div>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-gender" id="gender-o" value="o">
+                        <label class="form-check-label" for="gender-o">
+                            Prefer to self-identify <input type="text" 
+                            class="form-control" id="gender-other">
+                        </label>						  
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="survey-age">Age</label>
+                    <input type="number" class="form-control" id="survey-age">
+                </div>
+
+                <div class="form-group">
+                    <label for="survey-enjoy">How much did you enjoy the 
+                        HIT?</label>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-enjoy" id="enjoy-1" value="worse">
+                        <label class="form-check-label" for="enjoy-1">
+                            Worse than the average HIT
+                        </label>						  
+                    </div>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-enjoy" id="enjoy-2" value="average">
+                        <label class="form-check-label" for="enjoy-2">
+                            An average HIT
+                        </label>						  
+                    </div>
+                    <div class = "form-check">
+                        <input class="form-check-input" type="radio" 
+                        name="survey-enjoy" id="enjoy-3" value="better">
+                        <label class="form-check-label" for="enjoy-3">
+                            Better than the average HIT
+                        </label>						  
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="survey-comments">Please type below any 
+                        additional comments you have about this study: </label>
+                    <textarea class="form-control" id="survey-comments" 
+                    rows="3"></textarea>
+                </div>
+
+                <button class="jspsych-btn submit">
+                    Submit Data
+                </button>
+            </form>
+        </div>
+
+        <div id = "debrief" class = "slide">
+            <div class = "standalone debrief-slide">
+                <h1>Thank you for completing our HIT! It is now safe to close 
+                    the tab.</h1>
+            </div>   
+        </div>   
+
+    </div> 
+
+</body>
